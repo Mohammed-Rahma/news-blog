@@ -30,7 +30,7 @@ class ProductRequest extends FormRequest
                 'description' => 'nullable|string',
                 'short_description' => 'nullable|string|max:500',
                 'price' => 'required|numeric|min:0',
-                'compare_price' => 'nullable|numeric|main:0|gt:price',
+                'compare_price' => 'required|numeric|main:0|gt:price',
                 'image' => 'image|dimensions:min_width=400,min_height=300|max:500',
                 'status' => 'required|in:active , draft , archived',
         ];
@@ -39,7 +39,7 @@ class ProductRequest extends FormRequest
     public function messages()
     {
         return[
-            'name.required' => 'The product name is mandatory!',
+            'name.required' => 'The field name is mandatory!',
             'required' => ':attribute field is required',
             'unique' => 'the value alredy exsits ! '      
           ];

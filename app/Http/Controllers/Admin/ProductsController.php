@@ -37,6 +37,11 @@ class ProductsController extends Controller
             'product' => $products,
             'categories' => $category,
             'title' => 'Create Products',
+            'status_options'=>[
+                'active'=>'Active',
+                'draft'=>'draft',
+                'archived'=>'Archived'
+            ]
         ]);
     }
 
@@ -78,6 +83,11 @@ class ProductsController extends Controller
             'product' => $product,
             'categories' => $category,
             'title' => 'Edit Products',
+            'status_options'=>[
+                'active'=>'Active',
+                'draft'=>'draft',
+                'archived'=>'Archived'
+            ]
         ]);
     }
 
