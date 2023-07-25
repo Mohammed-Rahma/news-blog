@@ -35,15 +35,13 @@
             <td>{{$product->name}}</td>
             <td>{{$product->category_name}}</td>
             <td>{{$product->slug}}</td>
-            <td>{{$product->price}}</td>
+            <td>{{$product->PriceFormmated}}</td>
             <td>{{$product->compare_price}}</td>
             <td>{{$product->status}}</td>
             <td>
-                @if($product->image)
-                <img src="{{asset('storage/'. $product->image)}}" width="60" alt="">
-                @else
-                <img src="https://placehold.co/100x100" width="60" alt="">
-                @endif
+                <a href="{{$product->image_url}}">
+                    <img src="{{$product->image_url}}" width="60" alt="">
+                </a>
             </td>
             <td><a href="{{route('products.edit' , $product->id)}}" class="btn btn-sm btn-outline-dark">Edit</a></td>
             <td>

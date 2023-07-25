@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -32,16 +35,12 @@ class ProductsController extends Controller
     public function create()
     {
         $products = new Product();
-        $category = Category::all();
+        $category = Category::all();    
         return view('admin.products.create', [
             'product' => $products,
             'categories' => $category,
-            'title' => 'Create Products',
-            'status_options'=>[
-                'active'=>'Active',
-                'draft'=>'draft',
-                'archived'=>'Archived'
-            ]
+            'title' => 'Create Product',
+            'status_options' => Product::StatusOptions()
         ]);
     }
 
@@ -53,12 +52,21 @@ class ProductsController extends Controller
 
 
         $data = $request->validated();
+
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $path = $file->store('uploads/images', ['disk' => 'public']);
             $data['image'] = $path;
         }
         $product = Product::create($data);
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+               ProductImage::create([
+                'product_id'=>$product->id,
+                'image'=>$file->store('uploads/images', ['disk' => 'public'])
+               ]);
+            }
+        }
         //prg : post redirect get
         return  redirect()
             ->route('products.index')->with('success', "Product ({$product->name}) Created");
@@ -75,30 +83,43 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        $product = Product::findOrfail($id);
         $category = Category::all();
+        $gallery = ProductImage::where('product_id' , '=' , $product->id);
         return view('admin.products.edit', [
             'product' => $product,
             'categories' => $category,
             'title' => 'Edit Products',
-            'status_options'=>[
-                'active'=>'Active',
-                'draft'=>'draft',
-                'archived'=>'Archived'
-            ]
+            'status_options' => Product::StatusOptions(),
+            'gallery'=>$gallery
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        $product = Product::findOrfail($id);
         $data = $request->validated();
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $path = $file->store('uploads\images', ['disk' => 'public']);
+            $data['image'] = $path;
+        }
+        $old_image = $product->image;
         $product->update($data);
+        if ($old_image && $old_image != $product->image) {
+            Storage::disk('public')->delete($old_image);
+        }
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image' => $file->store('uploads/images', ['disk' => 'public'])
+                ]);
+            }
+        }
         return redirect()->route('products.index')->with('success', "Product ({$product->name}) Updated");
     }
 
@@ -109,6 +130,7 @@ class ProductsController extends Controller
     {
         $product = Product::findOrfail($id);
         $product->delete();
-        return redirect()->route('products.index')->with('success', "Product ({$product->name}) deleted");
+        // Product::where('id' , '=' , $id)->delete();
+        return redirect()->route('products.index')->with('success', "Product {($product->name)} deleted");
     }
 }

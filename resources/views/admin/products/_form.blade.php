@@ -30,7 +30,7 @@
             <select name="category_id" id="category_id" class="form-control form-select ">
                 <option>Select Category</option>
                 @foreach($categories as $category)
-                <option @selected ($category->id == old('category_id', '$product->category_id')) value="{{$category->id}}">{{$category->name}}</option>
+                <option @selected($category->id == old('category_id', '$product->category_id')) value="{{$category->id}}">{{$category->name}}</option>
                 @endforeach
             </select>
         </div>
@@ -47,6 +47,21 @@
             @error('compare_price')
             <p class="text-danger">{{$message}}</p>
             @enderror
+        </div>
+        <div class="mb-3">
+            <label for="gallery">Gallery</label>
+            <div>
+                <input class="form-control" type="file" name="gallery[]" multiple id="gallery">
+            </div>
+            @if ($gallery ?? false)
+            <div class="row">
+                @foreach($gallery as $image)
+                <div class="col-md-3">
+                    <img src="{{$image->GalleryImage}}" class="img-fluid" alt="">
+                </div>
+                @endforeach
+            </div>
+            @endif
         </div>
     </div>
     <div class="col-md-4">
@@ -74,16 +89,13 @@
             <label for="short_description">Short Description</label>
             <textarea class="form-control" id="short_description" name="short_description" placeholder="Short Description" rows="2">{{old('short_description' , $product->short_description)}}</textarea>
         </div>
-
-
         <div class="mb-3">
-            <label for="formFile">Image</label>
-            <input class="form-control" type="file" name="image" id="formFile">
+            <img src="{{$product->ImageURL}}" width="70" alt="">
+            <input class="form-control" type="file" name="image" id="image">
         </div>
-
     </div>
-
 </div>
+
 
 <div class="col-auto">
     <button type="submit" class="btn btn-primary mb-3">{{$submit??'Save'}}</button>

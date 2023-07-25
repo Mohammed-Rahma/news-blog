@@ -22,27 +22,29 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        $product = $this->route('product',new Product());
+        $product = $this->route('product', new Product());  
         return [
-                'name' => 'required|max:255|min:3',
-                'slug' => "required|unique:products,slug,$product->id",
-                'category_id' => 'nullable|int|exists:categories,id',
-                'description' => 'nullable|string',
-                'short_description' => 'nullable|string|max:500',
-                'price' => 'required|numeric|min:0',
-                'compare_price' => 'required|numeric|main:0|gt:price',
-                'image' => 'image|dimensions:min_width=400,min_height=300|max:500',
-                'status' => 'required|in:active , draft , archived',
+            'name' => 'required|max:255|min:3',
+            'slug' => "required|unique:products,slug,$product->id",
+            'category_id' => 'nullable|int|exists:categories,id',
+            'description' => 'nullable|string',
+            'short_description' => 'string|max:500',
+            'price' => 'required|numeric|min:0',
+            'compare_price' => 'nullable|numeric|min:0|gt:price',      
+            'image' => 'nullable|image|dimensions:min_width=400,min_height=300,|max:500', 
+            'status' => 'required|in:active,draft,archived',
+            'gallery' => 'nullable|array',
+            'gallery.*' => 'image',
         ];
     }
 
-    public function messages()
+    //custom messages
+    public function messages(): array 
     {
-        return[
-            'name.required' => 'The field name is mandatory!',
-            'required' => ':attribute field is required',
-            'unique' => 'the value alredy exsits ! '      
-          ];
-        
+        return [
+            'name.required' => 'The product name is mandatory!', 
+            'required' => ':attribute field is required', 
+            'unique' => 'the value alredy exsits ! '
+        ];
     }
 }

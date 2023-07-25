@@ -64,7 +64,7 @@ class CategoriesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request, string $id)
     {
         $category = Category::findorfail($id);
         $data = $request->all();
