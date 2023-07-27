@@ -3,12 +3,7 @@
 @section('title' , 'Products')
 
 @section('content')
-
 <div class="container-fluid d-flex justify-content-end">
-    <a href="{{route('products.create')}}"><button type="button" class="btn btn-outline-primary mb-2">Create News</button></a>
-    <div class="ml-2">
-        <a href="{{route('products.trashed')}}"><button type="button" class="btn btn-outline-danger mb-2">Trashed</button></a>
-    </div>
 </div>
 
 @if(session()->has('success'))
@@ -20,12 +15,8 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Category</th>
-            <th>Slug</th>
-            <th>Price</th>
-            <th>Compare Price</th>
-            <th>Status</th>
             <th>Image</th>
+            <th>Delete At</th>
             <th></th>
             <th></th>
 
@@ -36,24 +27,28 @@
         <tr>
             <td>{{$product->id}}</td>
             <td>{{$product->name}}</td>
-            <td>{{$product->category_name}}</td>
-            <td>{{$product->slug}}</td>
-            <td>{{$product->PriceFormmated}}</td>
-            <td>{{$product->compare_price}}</td>
-            <td>{{$product->status}}</td>
             <td>
                 <a href="{{$product->image_url}}">
                     <img src="{{$product->image_url}}" width="60" alt="">
                 </a>
             </td>
-            <td><a href="{{route('products.edit' , $product->id)}}" class="btn btn-sm btn-outline-dark">Edit</a></td>
+            <td>{{$product->delete_at}}</td>
+
             <td>
-                <form action="{{route('products.forceDelete' , $product->id)}}" method="post">
+                <form action="{{route('products.restore' , $product->id)}}" method="post">
+                    @csrf
+                    @method('put')
+                    <button class="btn btn-sm btn-primary"><i class="fas fa-trash"></i> Restore</button>
+                </form>
+            </td>
+            <td>
+                <form action="{{route('products.destroy' , $product->id)}}" method="post">
                     @csrf
                     @method('delete')
                     <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
                 </form>
-            </td>
+            </td> 
+
         </tr>
         @endforeach
     </tbody>

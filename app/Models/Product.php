@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use NumberFormatter;
 use Whoops\Exception\Formatter;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory , SoftDeletes;
 
     const  Status_Active = 'active';
     const  Status_Draft = 'draft';
@@ -45,4 +46,5 @@ class Product extends Model
         }
         return 'https://placehold.co/600x600';
     }
+
 }

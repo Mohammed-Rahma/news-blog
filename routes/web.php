@@ -21,5 +21,8 @@ Route::get('/', function () {
 
 Route::resource('/admin/products' , ProductsController::class);
 Route::resource('/admin/categories' , CategoriesController::class);
+Route::get('/admin/products/trashed' , [ProductsController::class , 'trashed'])->name('products.trashed');
+Route::put('/admin/products/{product}/retore' , [ProductsController::class , 'reatore'])->name('products.reatore');
+Route::delete('/admin/products/{product}/forceDelete' , [ProductsController::class , 'forceDelete'])->name('products.forceDelete');
 
 

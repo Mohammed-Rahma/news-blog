@@ -23,7 +23,7 @@ class ProductsController extends Controller
             ->select([
                 'products.*',
                 'categories.name as category_name'
-            ])->get();
+            ])->simplePaginate(2); //onlyTrashed(),withTrashed()
         return view('admin.products.index', [
             'products' => $products
         ]);
@@ -132,5 +132,25 @@ class ProductsController extends Controller
         $product->delete();
         // Product::where('id' , '=' , $id)->delete();
         return redirect()->route('products.index')->with('success', "Product {($product->name)} deleted");
+    }
+
+    public function trashed(){
+     echo 'ddd';
+        $products = Product::onlyTrashed()->paginate();
+        return view('admin.products.trashed' , [
+            'products'=>$products
+        ]);
+    }
+    public function restore(string $id){
+        $product = Product::onlyTrashed()->findorfail($id);
+         $product->restore();
+        return redirect()->route('products.index')->with('success', "Product {($product->name)} Restore");
+
+    }
+    public function forceDelete(string $id){
+        $product = Product::onlyTrashed()->findorfail($id);
+        $product->forceDelete();
+        return redirect()->route('products.index')->with('success', "Product {($product->name)} deleted");
+
     }
 }
