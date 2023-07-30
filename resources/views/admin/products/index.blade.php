@@ -48,7 +48,7 @@
             </td>
             <td><a href="{{route('products.edit' , $product->id)}}" class="btn btn-sm btn-outline-dark">Edit</a></td>
             <td>
-                <form action="{{route('products.forceDelete' , $product->id)}}" method="post">
+                <form action="{{route('products.destroy' , $product->id)}}" method="post">
                     @csrf
                     @method('delete')
                     <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>

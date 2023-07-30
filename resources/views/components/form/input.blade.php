@@ -5,8 +5,8 @@
 ])
 
 <div class="mb-3">
-    <label for="{{$name}}">{{$label}}</label>
-    <input type="{{$type}}" class="form-control @error($name) is-invalid @enderror " id="{{$id}}" value="{{old( $name , $value )}}" name="{{$name}}" placeholder="{{$label}}">
+    <label for="{{$name}}">{{$label}}</label>       
+    <input type="{{$type}}" step="0.1" min="0" class="form-control @error($name) is-invalid @enderror " id="{{$id}}" value="{{old( $name , $value )}}" name="{{$name}}" placeholder="{{$label}}">
     @error($name)
     <p class="text-danger">{{$message}}</p>
     @enderror

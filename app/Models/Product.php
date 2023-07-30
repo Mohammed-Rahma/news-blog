@@ -20,6 +20,7 @@ class Product extends Model
         'name', 'slug', 'category_id', 'description', 'short_description', 'price', 'compare_price', 'image', 'status'
     ];
 
+
     public static function  StatusOptions()
     {
         return [
@@ -29,10 +30,29 @@ class Product extends Model
 
         ];
     }
+    
+    //Global scope 
+    public static function booted(){
+       static::addGlobalScope('owner' , function($query){
+             $query->where('user_id' , '=' , 1);
+       });
+    }
+
+    //local scope
+    public function scopeActive($query){
+        $query->where('status' , '=' , 'active');
+    }
+
+
     public function getPriceFormmatedAttribute()
     {
         $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
         return $formatter->formatCurrency($this->price, 'ILS');
+    }
+    public function getComparePriceFormmatedAttribute()
+    {
+        $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
+        return $formatter->formatCurrency($this->compare_price, 'USD');
     }
     public function getNameAttribute($value)
     {

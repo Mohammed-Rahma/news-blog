@@ -38,11 +38,11 @@
                 <form action="{{route('products.restore' , $product->id)}}" method="post">
                     @csrf
                     @method('put')
-                    <button class="btn btn-sm btn-primary"><i class="fas fa-trash"></i> Restore</button>
+                    <button class="btn btn-sm btn-primary"><i class="fas"></i> Restore</button>
                 </form>
             </td>
             <td>
-                <form action="{{route('products.destroy' , $product->id)}}" method="post">
+                <form action="{{route('products.force-delete' , $product->id)}}" method="post">
                     @csrf
                     @method('delete')
                     <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>

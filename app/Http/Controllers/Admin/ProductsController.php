@@ -23,7 +23,10 @@ class ProductsController extends Controller
             ->select([
                 'products.*',
                 'categories.name as category_name'
-            ])->simplePaginate(2); //onlyTrashed(),withTrashed()
+            ])->active()
+            // ->where('user_id' , '=' , 1)
+            ->withoutglobalscope('owner')
+            ->simplePaginate(2); //onlyTrashed(),withTrashed()
         return view('admin.products.index', [
             'products' => $products
         ]);
@@ -135,7 +138,6 @@ class ProductsController extends Controller
     }
 
     public function trashed(){
-     echo 'ddd';
         $products = Product::onlyTrashed()->paginate();
         return view('admin.products.trashed' , [
             'products'=>$products
