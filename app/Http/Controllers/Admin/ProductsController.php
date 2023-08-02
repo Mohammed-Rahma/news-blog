@@ -26,7 +26,7 @@ class ProductsController extends Controller
             ])->active()
             // ->where('user_id' , '=' , 1)
             ->withoutglobalscope('owner')
-            ->simplePaginate(2); //onlyTrashed(),withTrashed()
+            ->simplePaginate(5); //onlyTrashed(),withTrashed()
         return view('admin.products.index', [
             'products' => $products
         ]);
@@ -52,7 +52,6 @@ class ProductsController extends Controller
      */
     public function store(ProductRequest $request)
     {
-
 
         $data = $request->validated();
 

@@ -20,6 +20,10 @@ class Product extends Model
         'name', 'slug', 'category_id', 'description', 'short_description', 'price', 'compare_price', 'image', 'status'
     ];
 
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
+
 
     public static function  StatusOptions()
     {
@@ -44,16 +48,16 @@ class Product extends Model
     }
 
 
-    public function getPriceFormmatedAttribute()
-    {
-        $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
-        return $formatter->formatCurrency($this->price, 'ILS');
-    }
-    public function getComparePriceFormmatedAttribute()
-    {
-        $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
-        return $formatter->formatCurrency($this->compare_price, 'USD');
-    }
+    // public function getPriceFormmatedAttribute()
+    // {
+    //     $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
+    //     return $formatter->formatCurrency($this->price, 'ILS');
+    // }
+    // public function getComparePriceFormmatedAttribute()
+    // {
+    //     $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
+    //     return $formatter->formatCurrency($this->compare_price, 'USD');
+    // }
     public function getNameAttribute($value)
     {
         return ucwords($value);
