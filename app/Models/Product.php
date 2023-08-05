@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use NumberFormatter;
-use Whoops\Exception\Formatter;
 
-class Product extends Model
+class Product extends Model  
 {
     use HasFactory , SoftDeletes;
 
@@ -17,11 +16,27 @@ class Product extends Model
     const  Status_Draft = 'draft';
     const Status_Archived = 'archived';
     protected $fillable = [
-        'name', 'slug', 'category_id', 'description', 'short_description', 'price', 'compare_price', 'image', 'status'
+        'name', 'slug', 'user_id','category_id', 'description', 'short_description', 'price', 'compare_price', 'image', 'status'
     ];
 
+    // public function getPriceFormmatedAttribute()
+    // {
+    //     $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
+    //     return $formatter->formatCurrency($this->price, 'ILS');
+    // }
+    // public function getComparePriceFormmatedAttribute()
+    // {
+    //     $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
+    //     return $formatter->formatCurrency($this->compare_price, 'USD');
+    // }
+
+    
+
     public function category(){
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class , 'category_id' )->withDefault([
+            'name'=>'Category NOt found ',
+            // 'image'=>''
+        ]);
     }
 
 
@@ -38,7 +53,7 @@ class Product extends Model
     //Global scope 
     public static function booted(){
        static::addGlobalScope('owner' , function($query){
-             $query->where('user_id' , '=' , 1);
+             $query->where('user_id' , '=' ,Auth::id());
        });
     }
 
@@ -48,16 +63,7 @@ class Product extends Model
     }
 
 
-    // public function getPriceFormmatedAttribute()
-    // {
-    //     $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
-    //     return $formatter->formatCurrency($this->price, 'ILS');
-    // }
-    // public function getComparePriceFormmatedAttribute()
-    // {
-    //     $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
-    //     return $formatter->formatCurrency($this->compare_price, 'USD');
-    // }
+
     public function getNameAttribute($value)
     {
         return ucwords($value);
@@ -70,5 +76,7 @@ class Product extends Model
         }
         return 'https://placehold.co/600x600';
     }
+
+
 
 }

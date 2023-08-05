@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth' , 'auth.type:user'])->group(function () {
-    Route::get('/products/trashed', [ProductsController::class, 'trashed'])->name('products.trashed');
-    Route::put('/products/restor/{product}', [ProductsController::class, 'restore'])->name('products.restore');
-    Route::delete('/products/{product}/force', [ProductsController::class, 'forceDelete'])->name('products.force-delete');
-    Route::resource('/admin/products', ProductsController::class);
-    Route::resource('/admin/categories', CategoriesController::class);
-});
+        Route::get('/products/trashed', [ProductsController::class, 'trashed'])->name('products.trashed');
+        Route::put('/products/restor/{product}', [ProductsController::class, 'restore'])->name('products.restore');
+        Route::delete('/products/{product}/force', [ProductsController::class, 'forceDelete'])->name('products.force-delete');
+        Route::resource('/admin/products', ProductsController::class);
+        Route::resource('/admin/categories', CategoriesController::class);
+    });

@@ -15,11 +15,11 @@ class TrendingProduct extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct($title ,$count)
+    public function __construct($title , $count)
     {
         $this->title=$title;
         $this->count= $count;
-        $this->products = Product::limit($count)->latest('updated_at')->get();
+        $this->products = Product::limit($count)->latest('updated_at')->with('category')->get();
     }
 
     /**

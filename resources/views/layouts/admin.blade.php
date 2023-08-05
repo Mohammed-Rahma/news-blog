@@ -180,7 +180,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             @csrf()
                             <button class="btn btn-primary mt-3">logout</button>
                         </form>
-                    </div>
+                    </div>          
                 </div>
 
                 <!-- SidebarSearch Form -->

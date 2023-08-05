@@ -15,6 +15,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name Category</th>
+                <th>Products Count</th>
                 <th></th>
                 <th></th>
 
@@ -25,6 +26,7 @@
             <tr>
                 <td>{{$category->id}}</td>
                 <td>{{$category->name}}</td>
+                <th>{{$category->products_count}}</th>
                 <td> <a href="{{route('categories.edit' , $category->id)}}">Edit</a> </td>
                 <td> 
                     <form action="{{route('categories.destroy' , $category->id)}}" method="post">

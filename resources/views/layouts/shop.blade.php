@@ -85,6 +85,23 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
+
+                        @if(Auth::check())
+                        <div class="top-end">
+                            <div class="user">
+                                <i class="lni lni-user"></i>
+                                {{Auth::user()->name}}
+                            </div>
+                            <ul class="user-login">
+                                <li>
+                                    <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logoutForm').submit() ">Logout</a>
+                                </li>
+                            </ul>
+                            <form id="logoutForm" action="{{route('logout')}}" method="post" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                        @else
                         <div class="top-end">
                             <div class="user">
                                 <i class="lni lni-user"></i>
@@ -92,13 +109,16 @@
                             </div>
                             <ul class="user-login">
                                 <li>
-                                    <a href="login.html">Sign In</a>
+                                    <a href="{{route('login')}}">Sign In</a>
                                 </li>
                                 <li>
-                                    <a href="register.html">Register</a>
+                                    <a href="{{route('register')}}">Register</a>
                                 </li>
                             </ul>
                         </div>
+                        @endif
+
+
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="product-info">
-        <span class="category">{{$product->category_id}}</span>
+        <span class="category">{{$product->category->name}}</span>
         <h4 class="title">
             <a href="{{route('products-details' , $product->slug)}}">{{$product->name}}</a>
         </h4>

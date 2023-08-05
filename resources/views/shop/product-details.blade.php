@@ -22,8 +22,7 @@
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
                             <h2 class="title">{{$product->name}}</h2>
-                            <p class="category"><i class="lni lni-tag"></i> Drones:<a href="javascript:void(0)">Action
-                                    cameras</a></p>
+                            <p class="category"><i class="lni lni-tag"></i><a href="javascript:void(0)">{{$product->Category->name}}</a></p>
                             <h3 class="price">{{$product->price_formmated}}<span>{{$product->compare_price_formmated}}</span></h3>
                             <p class="info-text">{{$product->short_description}}</p>
                             <div class="row">
@@ -179,8 +178,7 @@
                                 </li>
                             </ul>
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn review-btn" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
+                            <button type="button" class="btn review-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Leave a Review
                             </button>
                         </div>
@@ -254,13 +252,22 @@
                     </div>
                 </div>
             </div>
+            <div>
+                <h2> Samiler Products</h2>
+                <div class="row">
+                    @foreach($product->category->products()->where('id','!=',$product->id)->orderBy('name')->get() as $similar_product)
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <x-card.product-card :product="$similar_product" />
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </section>
     <!-- End Item Details -->
 
     <!-- Review Modal -->
-    <div class="modal fade review-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade review-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

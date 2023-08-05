@@ -39,7 +39,7 @@
         <div class="mb-3">
             <label for="slug">Category Name</label>
             <select name="category_id" id="category_id" class="form-control form-select ">
-                <option>Select Category</option>
+                <option></option>
                 @foreach($categories as $category)
                 <option @selected($category->id == old('category_id', '$product->category_id')) value="{{$category->id}}">{{$category->name}}</option>
                 @endforeach

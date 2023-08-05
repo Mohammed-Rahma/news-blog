@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
@@ -26,7 +27,7 @@ class ProductsController extends Controller
             ])->active()
             // ->where('user_id' , '=' , 1)
             ->withoutglobalscope('owner')
-            ->simplePaginate(5); //onlyTrashed(),withTrashed()
+            ->simplePaginate(4); //onlyTrashed(),withTrashed()
         return view('admin.products.index', [
             'products' => $products
         ]);
@@ -60,7 +61,10 @@ class ProductsController extends Controller
             $path = $file->store('uploads/images', ['disk' => 'public']);
             $data['image'] = $path;
         }
+        
+        $data['user_id'] = Auth::id();
         $product = Product::create($data);
+
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
                ProductImage::create([
@@ -69,6 +73,8 @@ class ProductsController extends Controller
                ]);
             }
         }
+
+
         //prg : post redirect get
         return  redirect()
             ->route('products.index')->with('success', "Product ({$product->name}) Created");
