@@ -15,7 +15,7 @@ class Shop extends Component
      * Create a new component instance.
      * اي بروبرتي معرفة ببلك هيا اوتو ماتك هيتم تمريرها للفيو 
      */
-    public function __construct($title , $breadcrumbs = true)
+    public function __construct($title = 'null' , $breadcrumbs = true)
     {
         $this->title = $title;
         $this->breadcrumbs = $breadcrumbs;

@@ -90,12 +90,16 @@
                         <div class="top-end">
                             <div class="user">
                                 <i class="lni lni-user"></i>
-                                {{Auth::user()->name}}
+                                {{Auth::user()->profile->first_name}}
                             </div>
                             <ul class="user-login">
                                 <li>
+                                    <a href="{{route('profile.edit')}}">Profile</a>
+                                </li>
+                                <li>
                                     <a href="{{route('logout')}}" onclick="event.preventDefault(); document.getElementById('logoutForm').submit() ">Logout</a>
                                 </li>
+
                             </ul>
                             <form id="logoutForm" action="{{route('logout')}}" method="post" style="display: none;">
                                 @csrf
