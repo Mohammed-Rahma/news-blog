@@ -14,13 +14,15 @@ use Illuminate\Support\Facades\View;
 
 class ProductsController extends Controller
 {
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $category = Category::all();
-        View::share([
-            'categories' => $category,
-            'status_options' => Product::StatusOptions()
-        ]);
+        if ($request->method() == 'GET') {
+            $category = Category::all();
+            View::share([
+                'categories' => $category,
+                'status_options' => Product::StatusOptions()
+            ]);
+        }
     }
     /**
      * Display a listing of the resource.
@@ -36,7 +38,7 @@ class ProductsController extends Controller
             ])
             // ->where('user_id' , '=' , 1)
             //$request->all()  ترجعلي بيانات من الفورم لو كان الفورم معمول بطريقة البوست و بتجيب كل الداتا الي تم تمريرها في البو ار ال url
-            ->Filter($request->query())
+            ->Filter($request)
             ->withoutglobalscope('owner')
             ->simplePaginate(4); //onlyTrashed(),withTrashed()
         return view('admin.products.index', [

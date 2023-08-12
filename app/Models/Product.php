@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -40,13 +41,22 @@ class Product extends Model
         ]);
     }
 
+    public function cart(){
+        $this->belongsToMany(User::class , 'carts'  , 'product_id' ,'user_id')
+             ->withPivot(['quantity'])
+             ->withTimestamps()
+             ->using(Cart::class);
+    }
+
+
+
 
     public static function  StatusOptions()
     {
         return [
             self::Status_Active => 'active',
             self::Status_Draft => 'draft',
-            self::Status_Archived => 'Archived'
+            self::Status_Archived => 'archived'
 
         ];
     }
@@ -65,29 +75,25 @@ class Product extends Model
         $query->where('status', '=', 'active');
     }
 
-    public function scopeFilter($query, $array)
+    public function scopeFilter(Builder $query , $request)
     {
-     $query->when($array['search'] ?? false , function ($query, $value) {
-            $query->where(function ($query) use ($value) {
-                $query->where('products.name', 'Like', "%$value%")
-                    ->orWhere('description', 'Like', "%$value%");
-                });
-             })
-            ->when($array['status'] ?? false, function ($query, $value) {
-                $query->where('status', '=', $value);
+        $query->when($request->search, function ($query, $value) {
+            $query->where('products.name', 'Like', "%$value%")
+                ->orWhere('products.description', 'Like', "%$value%");
+        })
+            ->when($request->category_id, function ($query, $value) {
+                $query->where('categories.id', 'Like', "%$value%");
             })
-            ->when($array['category_id'] ?? false, function ($query, $value) {
-                $query->where('category_id', '=', $value);
+            ->when($request->status, function ($query, $value) {
+                $query->where('products.status', 'Like', "%$value%");
             })
-            ->when($array['price_min'] ?? false, function ($query, $value) {
-                $query->where('price', '>=', $value);
+            ->when($request->price_min, function ($query, $value) {
+                $query->where('products.price', '>=', $value);
             })
-            ->when($array['price_max'] ?? false , function ($query, $value) {
-                $query->where('price', '<=', $value);
+            ->when($request->price_max, function ($query, $value) {
+                $query->where('products.price', '<=', $value);
             });
     }
-
-
 
     public function getNameAttribute($value)
     {
@@ -101,4 +107,7 @@ class Product extends Model
         }
         return 'https://placehold.co/600x600';
     }
+
+
+
 }

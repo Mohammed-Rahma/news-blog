@@ -47,5 +47,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return  $this->hasOne(Profile::class)->withDefault([
             'first_name'=>'NO name'
         ]);
+    }           
+
+    public function products(){
+        return $this->hasMany(Product::class);
     }
+    
+    public function cart(){ 
+        $this->belongsToMany(Product::class , 'carts' ,'user_id' , 'product_id')
+             ->withPivot(['quantity'])
+             ->withTimestamps()
+             ->using(Cart::class);
+    }
+
 }

@@ -4,34 +4,42 @@
 
 @section('content')
 
-<div class="row">
-    <div class="container-fluid d-flex justify-content-end">
-        <a href="{{route('products.create')}}"><button type="button" class="btn btn-outline-primary mb-2">Create News</button></a>
-        <div class="ml-2">
-            <a href="{{route('products.trashed')}}"><button type="button" class="btn btn-outline-danger mb-2">Trashed</button></a>
-        </div>
-    </div>
-
-    <div class="form-inline">
-        <form action="{{URL::current()}}" method="get">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search" class="form-control">
-            
-            <select name="status">
-                    <option value="">Status</option>
-                <option value="active" @selected (request('status') == 'active')>Active</option>
-                <option value="draft" @selected(request('status') == 'draft')>Draft</option>
-                <option value="archived" @selected(request('status') == 'archived')>archived</option>
-            </select>
-
-            
-            <input type="number" name="price_min" value="{{ request('price_min') }}" placeholder="Price Min"  class="form-control">
-            <input type="number" name="price_max" value="{{ request('price_max') }}" placeholder="Price Max" class="form-control">
-
-            <button type="submit" class="form-control">Filter</button>
-        </form>
-
+<div class="container-fluid d-flex justify-content-end">
+    <a href="{{route('products.create')}}"><button type="button" class="btn btn-outline-primary mb-2">Create News</button></a>
+    <div class="ml-2">
+        <a href="{{route('products.trashed')}}"><button type="button" class="btn btn-outline-danger mb-2">Trashed</button></a>
     </div>
 </div>
+
+<form action="{{URL::Current()}}" method="get">
+    <div class="row col-8">
+        <div class="col">
+            <input type="search" name="search" class="form-control" placeholder="search" value="{{request('search')}}">
+        </div>
+        <select name="category_id">
+            <option>All Categories</option>
+            @foreach($categories as $category)
+            <option value="{{$category->id}}" @selected (request('category_id' )== $category->id )>{{$category->name}}</option>
+            @endforeach
+        </select>
+         
+        <select name="status">
+            <option>Status...</option>
+            @foreach($status_options as $value => $text)
+            <option value="{{$value}}" @selected (request('status' )==$value )>{{$text}}</option>
+            @endforeach
+        </select>
+        <div class="col">
+            <input type="number" name="price_min" class="form-control" placeholder="Price Min" value="{{request('price_min')}}">
+        </div>
+        <div class="col">
+            <input type="number" name="price_max" class="form-control" placeholder="Price Max" value="{{request('price_max')}}">
+        </div>
+        <div>
+            <button type="submit" class="form-control">Filter</button>
+        </div>
+    </div>
+</form>
 
 @if(session()->has('success'))
 <div class="alert alert-success mt-2">{{session('success')}}</div>
