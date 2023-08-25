@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Cart extends Pivot
 {
-    use HasFactory , HasUuids;
-   protected $table = 'carts';
+    use HasFactory;
+    use HasUuids;
+    protected $table = 'carts';
     protected $fillable = [
         'cookie_id' , 'user_id' , 'product_id' , 'quantity'
     ];

@@ -17,14 +17,14 @@
             <input type="search" name="search" class="form-control" placeholder="search" value="{{request('search')}}">
         </div>
         <select name="category_id">
-            <option>All Categories</option>
+            <option value="">All Categories</option>
             @foreach($categories as $category)
             <option value="{{$category->id}}" @selected (request('category_id' )== $category->id )>{{$category->name}}</option>
             @endforeach
         </select>
          
         <select name="status">
-            <option>Status...</option>
+            <option value="">Status...</option>
             @foreach($status_options as $value => $text)
             <option value="{{$value}}" @selected (request('status' )==$value )>{{$text}}</option>
             @endforeach

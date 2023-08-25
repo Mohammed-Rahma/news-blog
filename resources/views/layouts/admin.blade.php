@@ -263,13 +263,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="content">
                 <div class="container-fluid">
                     <!-- مسؤل عن عرض محتوى السكشن   -->
-                    @yield('content')    
+                    @yield('content')   
                 </div>
             </div>
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->
@@ -300,6 +299,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    @yield('scripts')
 </body>
 
 </html>

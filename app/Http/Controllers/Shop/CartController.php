@@ -14,9 +14,9 @@ class CartController extends Controller
     public function index()
     {
         $cart = Cart::all();
-        return view('shop.cart' , [
+        return view('shop.cart', [
             'cart' => $cart
-        ] );
+        ]);
     }
     public function store(Request $request)
     {
@@ -25,31 +25,32 @@ class CartController extends Controller
             'quantity' => ['nullable', 'int', 'min:1', 'max:99']
         ]);
 
-        $cookie_value= $request->input('cookies_name');
-        if (! $cookie_value) {
-            $cookie_value = Str::uuid();
-            Cookie::queue('cookies_name' , $cookie_value , 60*24*30);
-
-            $item = Cart::where('cookie_id' , '=' , $cookie_value )
-                    ->where('product_id' , '=' , $request->input('product_id'))
-                    ->first();
-                    if($item){
-                        $item->increment('quantity' , $request->input('quantity', 1));
-                    }else{
-                        Cart::create([
-                            'cookie_id' => $cookie_value,
-                            'user_id' => Auth::id(),
-                            'product_id' => $request->input('product_id'),
-                            'quantity' => $request->input('quantity', 1)
-                        ]);
-                    }
-
+        $cookie_id = $request->cookie('cart_id');
+        if (!$cookie_id) {
+            $cookie_id = Str::uuid(); //ينشأ الكوكي
+            Cookie::queue('cart_id', $cookie_id, 60 * 24 * 30); //يربط الكوكي مع المستخدم
 
         }
 
-        return back()->with('success' , 'product added to cart');
+        $item = Cart::where('cookie_id', '=', $cookie_id)
+            ->where('product_id', '=', $request->input('product_id'))
+            ->first();
+        if ($item) {
+            $item->increment('quantity', $request->input('quantity', 1));
+        } else {
+            Cart::create([
+                'cookie_id' => $cookie_id,
+                'user_id' => Auth::id(),
+                'product_id' => $request->input('product_id'),
+                'quantity' => $request->input('quantity', 1),
+            ]);
+        }
+
+
+        return back()->with('success', 'Product added to Cart');
     }
-    public function destroy()
+
+    public function destroy($id)
     {
     }
 }

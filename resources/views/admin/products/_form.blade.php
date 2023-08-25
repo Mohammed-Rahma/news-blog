@@ -69,5 +69,5 @@
 </div>
 
 <div class="col-auto">
-    <button type="submit" class="btn btn-primary mb-3">{{$submit??'Save'}}</button>
+    <button id="submit" class="btn btn-primary mb-3">{{$submit??'Save'}}</button>
 </div>

@@ -7,7 +7,6 @@
                 <div class="cart-list-title">
                     <div class="row">
                         <div class="col-lg-1 col-md-1 col-12">
-
                         </div>
                         <div class="col-lg-4 col-md-3 col-12">
                             <p>Product Name</p>

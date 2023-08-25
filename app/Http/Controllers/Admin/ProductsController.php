@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
@@ -83,6 +84,19 @@ class ProductsController extends Controller
                 ]);
             }
         }
+        
+        //ajax
+        if ($product) {
+            return response()->json([
+                'status' => true,
+                'msg' => 'Successfully Created!'
+            ]);
+        } else {
+            return response()->json([
+                'status' => true,
+                'msg' => 'Failed Created!'
+            ]);
+        }
 
 
         //prg : post redirect get
@@ -123,7 +137,7 @@ class ProductsController extends Controller
             $data['image'] = $path;
         }
         $old_image = $product->image;
-        $product->update($data);
+        $offer = $product->update($data);
         if ($old_image && $old_image != $product->image) {
             Storage::disk('public')->delete($old_image);
         }
@@ -135,6 +149,21 @@ class ProductsController extends Controller
                 ]);
             }
         }
+
+        //ajax
+        if ($offer) {
+            return response()->json([
+                'status' => true,
+                'msg' => 'Successfully Updated!'
+            ]);
+        } else {
+            return response()->json([
+                'status' => true,
+                'msg' => 'Failed Updated!'
+            ]);
+        }
+
+
         return redirect()->route('products.index')->with('success', "Product ({$product->name}) Updated");
     }
 
@@ -146,7 +175,7 @@ class ProductsController extends Controller
         $product = Product::findOrfail($id);
         $product->delete();
         // Product::where('id' , '=' , $id)->delete();
-        return redirect()->route('products.index')->with('success', "Product {($product->name)} deleted");
+        return redirect()->route('products.index')->with('success', "Product {($product->name)} deleted!");
     }
 
     public function trashed()
