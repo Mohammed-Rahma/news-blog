@@ -11,6 +11,14 @@ class ProductImage extends Model
     protected $fillable = [
         'product_id', 'image'
     ];
+    protected $appends = [
+        'GalleryImage' 
+    ];
+
+    protected $hidden =[
+        'image' , 'created_at' , 'updated_at'
+    ];
+
 
     public function getGalleryImageAttribute(){
         return asset('storage/'. $this->image);

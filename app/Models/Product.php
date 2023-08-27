@@ -31,6 +31,30 @@ class Product extends Model
     //     return $formatter->formatCurrency($this->compare_price, 'USD');
     // }
 
+    public function getPriceFormattedAttribute()
+    {
+        // 'en' = config('app.local') يقرا الللغة حسب لغة الابلكيشن 
+        $formatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
+        return $formatter->formatCurrency($this->price, 'USD');
+    }
+    public function getComparePriceFormattedAttribute()
+    {
+        // 'en' = config('app.local') يقرا الللغة حسب لغة الابلكيشن 
+        $formatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
+        return $formatter->formatCurrency($this->compare_price, 'USD');
+    }
+  
+    // api
+    protected $appends = [
+        'image_url',
+        'price_formatted',
+        'ComparePriceFormatted'
+    ];
+
+    protected $hidden = [
+        'updated_at', 'deleted_at', 'image'
+    ];
+    // end api
 
 
     public function category()
@@ -39,6 +63,16 @@ class Product extends Model
             'name' => 'Category NOt found ',
             // 'image'=>''
         ]);
+    }
+
+    public function gallery()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function cart(){

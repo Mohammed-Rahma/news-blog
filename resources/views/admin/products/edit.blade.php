@@ -16,31 +16,3 @@
 </form>
 @endsection('content')
 
-<!-- ajax -->
-@section('scripts')
-<script>
-    $(document).on('click', '#submit', function(e) {
-        e.preventDefault();
-
-        var formData= new FormData($('#offerForm')[0]);
-
-        $.ajax({
-            type: 'post',
-            url: "{{route('products.update' , $product->id )}}",
-            data: formData,
-            enctype:"multipart/form-data",
-            processData:false,
-            contentType:false,
-            cache:false,
-            success: function(data) {
-                if (data.status == true) {
-                    $('#success_msg').show();
-                }  
-            },
-            error: function(reject) {
-
-            }
-        });
-    });
-</script>
-@stop

@@ -68,8 +68,8 @@
             <td>{{$product->name}}</td>
             <td>{{$product->category_name}}</td>
             <td>{{$product->slug}}</td>
-            <td>{{$product->PriceFormmated}}</td>
-            <td>{{$product->compare_price}}</td>
+            <td>{{$product->price_formatted}}</td>
+            <td>{{$product->ComparePriceFormatted}}</td>
             <td>{{$product->status}}</td>
             <td>
                 <a href="{{$product->image_url}}">

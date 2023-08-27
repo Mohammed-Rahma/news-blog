@@ -41,7 +41,7 @@ class ProductsController extends Controller
             //$request->all()  ترجعلي بيانات من الفورم لو كان الفورم معمول بطريقة البوست و بتجيب كل الداتا الي تم تمريرها في البو ار ال url
             ->Filter($request)
             ->withoutglobalscope('owner')
-            ->simplePaginate(4); //onlyTrashed(),withTrashed()
+            ->Paginate(4); //onlyTrashed(),withTrashed()
         return view('admin.products.index', [
             'products' => $products
         ]);
@@ -149,20 +149,6 @@ class ProductsController extends Controller
                 ]);
             }
         }
-
-        //ajax
-        if ($offer) {
-            return response()->json([
-                'status' => true,
-                'msg' => 'Successfully Updated!'
-            ]);
-        } else {
-            return response()->json([
-                'status' => true,
-                'msg' => 'Failed Updated!'
-            ]);
-        }
-
 
         return redirect()->route('products.index')->with('success', "Product ({$product->name}) Updated");
     }
