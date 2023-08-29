@@ -20,29 +20,8 @@ class Product extends Model
         'name', 'slug', 'user_id', 'category_id', 'description', 'short_description', 'price', 'compare_price', 'image', 'status'
     ];
 
-    // public function getPriceFormmatedAttribute()
-    // {
-    //     $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
-    //     return $formatter->formatCurrency($this->price, 'ILS');
-    // }
-    // public function getComparePriceFormmatedAttribute()
-    // {
-    //     $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
-    //     return $formatter->formatCurrency($this->compare_price, 'USD');
-    // }
 
-    public function getPriceFormattedAttribute()
-    {
-        // 'en' = config('app.local') يقرا الللغة حسب لغة الابلكيشن 
-        $formatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
-        return $formatter->formatCurrency($this->price, 'USD');
-    }
-    public function getComparePriceFormattedAttribute()
-    {
-        // 'en' = config('app.local') يقرا الللغة حسب لغة الابلكيشن 
-        $formatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
-        return $formatter->formatCurrency($this->compare_price, 'USD');
-    }
+
   
     // api
     protected $appends = [
@@ -98,9 +77,9 @@ class Product extends Model
     //Global scope 
     public static function booted()
     {
-        static::addGlobalScope('owner', function ($query) {
-            $query->where('user_id', '=', Auth::id());
-        });
+        // static::addGlobalScope('owner', function ($query) {
+        //     $query->where('user_id', '=', Auth::id());
+        // });
     }
 
     //local scope
@@ -128,6 +107,20 @@ class Product extends Model
                 $query->where('products.price', '<=', $value);
             });
     }
+
+    public function getPriceFormattedAttribute()
+    {
+        // 'en' = config('app.local') يقرا الللغة حسب لغة الابلكيشن 
+        $formatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
+        return $formatter->formatCurrency($this->price, 'USD');
+    }
+    public function getComparePriceFormattedAttribute()
+    {
+        // 'en' = config('app.local') يقرا الللغة حسب لغة الابلكيشن 
+        $formatter = new NumberFormatter('en', NumberFormatter::CURRENCY);
+        return $formatter->formatCurrency($this->compare_price, 'USD');
+    }
+
 
     public function getNameAttribute($value)
     {
