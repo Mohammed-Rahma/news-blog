@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\V1\LoginController;
 use App\Http\Controllers\Api\V1\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('products' , ProductsController::class); 
+Route::post('/access-tokens' , [LoginController::class , 'store'])->middleware('guest:sanctum');
+Route::delete('/access-tokens' , [LoginController::class , 'destory'])->middleware('auth:sanctum');
+Route::get('/access-tokens' , [LoginController::class , 'index'])->middleware('auth:sanctum');

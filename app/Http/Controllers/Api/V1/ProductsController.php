@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
+    public function __construct()
+    { 
+       $this->middleware('auth:sanctum')->except('index', 'show') ;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -28,6 +32,11 @@ class ProductsController extends Controller
      */
     public function store(ProductRequest $request)
     {
+        $user = $request->user('sanctum');
+        if (!$user->tokenCan('products.create')) { //هل التوكن بقدر ينشا منتج .اذا م كان معه الصلاحية يطلعله رسالة 403
+            abort(403);
+        }
+
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -47,6 +56,7 @@ class ProductsController extends Controller
                 ]);
             }
         }
+        
         return $product;
     }
 
@@ -63,6 +73,12 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        $user = $request->user('sanctum');
+        if (!$user->tokenCan('products.update')) { //هل التوكن بقدر ينشا منتج .اذا م كان معه الصلاحية يطلعله رسالة 403
+            abort(403);
+        }
+
+
         $data = $request->validate(
             [
                 'name'=>['sometimes', 'required'],
@@ -99,9 +115,14 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request,Product $product)
     {
-        $product = Product::findOrfail($id);
+        $user = $request->user('sanctum');
+        if (!$user->tokenCan('products.delete')) { //هل التوكن بقدر ينشا منتج .اذا م كان معه الصلاحية يطلعله رسالة 403
+            abort(403);
+        }
+
+
         $product->delete();
         return [
             "message" => __('messages.deleted'),
